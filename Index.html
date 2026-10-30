@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#091a38">
+<title>Escolha sua Estrela | Interact Morumbi</title>
+<style>
+:root {
+  --navy:#07152e;
+  --blue:#102c58;
+  --gold:#f2d58e;
+  --pale:#e5efff;
+  --sky:#a9d5ff;
+  --lilac:#d6b7f2;
+}
+* { box-sizing:border-box; }
+
+body {
+ margin:0;
+ min-height:100vh;
+ color:var(--pale);
+ font-family:Georgia,serif;
+ background:
+ radial-gradient(ellipse at 15% 10%,#244b7b,transparent 34%),
+ radial-gradient(ellipse at 90% 75%,#332e65,transparent 30%),
+ linear-gradient(145deg,#07152e,#102d59 55%,#09172f);
+}
+
+body:before {
+ content:"";
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ opacity:.7;
+ background-image:
+ radial-gradient(2px 2px at 12% 20%,#fff 99%,transparent),
+ radial-gradient(2px 2px at 80% 15%,#f2d58e 99%,transparent),
+ radial-gradient(1px 1px at 65% 48%,#fff 99%,transparent),
+ radial-gradient(2px 2px at 25% 75%,#a9d5ff 99%,transparent),
+ radial-gradient(1px 1px at 92% 88%,#fff 99%,transparent);
+ background-size:270px 240px;
+}
+
+.wrap {
+ width:min(760px,100%);
+ margin:auto;
+ padding:22px 16px 30px;
+ position:relative;
+}
+
+header {
+ text-align:center;
+ padding:16px 10px 22px;
+}
+
+.club {
+ font:700 12px Arial,sans-serif;
+ letter-spacing:4px;
+ color:#f5e5b7;
+}
+
+.tag {
+ display:inline-block;
+ margin-top:13px;
+ padding:6px 13px;
+ border:1px solid #9b8556;
+ border-radius:30px;
+ color:var(--gold);
+ font:11px Arial,sans-serif;
+ letter-spacing:2px;
+}
+
+h1 {
+ font-size:clamp(30px,7vw,48px);
+ color:#fff0c6;
+ margin:18px 0 9px;
+ font-weight:normal;
+ text-shadow:0 2px 24px #d3b46b55;
+}
+
+.subtitle {
+ font:12px Arial,sans-serif;
+ letter-spacing:3px;
+ color:var(--gold);
+}
+
+.intro {
+ max-width:520px;
+ margin:16px auto 0;
+ color:#d0e0f7;
+ font:15px/1.65 Arial,sans-serif;
+}
+
+.stars {
+ color:var(--gold);
+ letter-spacing:13px;
+ font-size:21px;
+ margin-top:17px;
+}
+
+.panel {
+ background:#0b2143e8;
+ border:1px solid #607da4;
+ border-radius:22px;
+ padding:clamp(18px,4vw,30px);
+ box-shadow:0 18px 55px #0005;
+}
+
+.progress {
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:9px;
+ margin-bottom:24px;
+ font:10px Arial,sans-serif;
+ color:#91afd3;
+ flex-wrap:wrap;
+}
+
+.dot {
+ border:1px solid #6886ad;
+ border-radius:20px;
+ padding:7px 10px;
+}
+
+.dot.active {
+ background:#d9b96e;
+ color:#132746;
+ border-color:#f2d58e;
+ font-weight:bold;
+}
+
+h2 {
+ font-size:25px;
+ font-weight:normal;
+ color:#f5e5b7;
+ text-align:center;
+ margin:0 0 8px;
+}
+
+.lead {
+ text-align:center;
+ color:#bcd0eb;
+ font:14px/1.6 Arial,sans-serif;
+ margin:0 auto 20px;
+ max-width:520px;
+}
+
+.grid {
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:11px;
+}
+
+.choice {
+ text-align:left;
+ color:var(--pale);
+ background:linear-gradient(145deg,#17365f,#102747);
+ border:1px solid #47658d;
+ border-radius:13px;
+ padding:15px;
+ min-height:116px;
+ cursor:pointer;
+ transition:.18s;
+}
+
+.choice:hover {
+ border-color:var(--gold);
+ transform:translateY(-2px);
+}
+
+.symbol {
+ display:block;
+ font-size:25px;
+ margin-bottom:8px;
+ color:var(--gold);
+}
+
+.choice strong {
+ display:block;
+ font:600 15px Arial,sans-serif;
+ margin-bottom:6px;
+}
+
+.choice small {
+ display:block;
+ color:#b7cce7;
+ font:12px/1.45 Arial,sans-serif;
+}
+
+.option {
+ display:block;
+ width:100%;
+ text-align:left;
+ background:#112c50;
+ border:1px solid #3a5880;
+ color:#e2ecfa;
+ border-radius:11px;
+ padding:14px;
+ margin:9px 0;
+ font:14px/1.4 Arial,sans-serif;
+ cursor:pointer;
+}
+
+.option.selected {
+ border-color:var(--gold);
+ background:#254875;
+}
+
+button.primary {
+ border:0;
+ border-radius:30px;
+ padding:13px 20px;
+ font:600 14px Arial,sans-serif;
+ cursor:pointer;
+ background:linear-gradient(110deg,#f4dc9d,#d8b66e);
+ color:#132746;
+ width:100%;
+ margin-top:16px;
+}
+
+button.primary:disabled {
+ opacity:.4;
+ cursor:not-allowed;
+}
+
+button.secondary {
+ display:block;
+ margin:12px auto 0;
+ background:transparent;
+ color:#b9cce5;
+ border:0;
+ padding:10px;
+ cursor:pointer;
+}
+
+.result {
+ background:linear-gradient(145deg,#142f56,#102443);
+ border:1px solid #7b8fac;
+ border-radius:16px;
+ padding:22px;
+ margin-top:20px;
+}
+
+.result h3 {
+ text-align:center;
+ color:#f5e5b7;
+ font-size:24px;
+ font-weight:normal;
+ margin:8px 0 18px;
+}
+
+.result p {
+ font:15px/1.8 Arial,sans-serif;
+ color:#e2ecfa;
+}
+
+.quote {
+ text-align:center;
+ color:var(--gold)!important;
+ font-style:italic;
+}
+
+.center { text-align:center; }
+.hidden { display:none!important; }
+
+footer {
+ text-align:center;
+ padding:23px 8px 5px;
+ color:#b5c9e5;
+ font:11px/1.8 Arial,sans-serif;
+ letter-spacing:1px;
+}
+
+footer .gold {
+ color:var(--gold);
+ font-size:18px;
+}
+
+@media(max-width:390px) {
+ .grid { gap:8px; }
+ .choice { padding:12px; min-height:108px; }
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<header>
+ <div class="club">✦ INTERACT MORUMBI ✦</div>
+ <div class="tag">SEMANA MUNDIAL DO INTERACT · 2026</div>
+ <h1>ESCOLHA SUA ESTRELA</h1>
+ <div class="subtitle">ILUMINANDO CAMINHOS</div>
+ <p class="intro">
+ Um universo de sentimentos, descobertas e novas possibilidades.
+ Escolha uma estrela e encontre uma mensagem para o seu momento.
+ </p>
+ <div class="stars">✦　✧　⋆　✧　✦</div>
+</header>
+
+<main class="panel">
+
+<div class="progress">
+ <span class="dot active" id="p1">01 · SUA ESCOLHA</span>
+ <span>—</span>
+ <span class="dot" id="p2">02 · SEU MOMENTO</span>
+ <span>—</span>
+ <span class="dot" id="p3">03 · SUA LUZ</span>
+</div>
+
+<section id="page1">
+ <h2>Qual estrela combina com você?</h2>
+ <p class="lead">
+ Pense em como você está se sentindo hoje.
+ Não existem respostas certas ou erradas.
+ </p>
+ <div class="grid" id="choices"></div>
+ <p class="center" style="color:#91afd3;font:11px Arial;margin-top:18px">
+ ✧ Escolha livremente. Este espaço é seu. ✧
+ </p>
+</section>
+
+<section id="page2" class="hidden">
+ <h2 id="secondTitle">Vamos um pouquinho mais fundo...</h2>
+ <p class="lead">
+ Qual dessas situações mais se aproxima do que você sente?
+ </p>
+ <div id="details"></div>
+ <button class="primary" id="reveal" disabled>
+ REVELAR MINHA MENSAGEM ✦
+ </button>
+ <button class="secondary" id="back1">
+ ← Voltar às estrelas
+ </button>
+</section>
+
+<section id="page3" class="hidden">
+ <div class="center" style="color:#f2d58e;font-size:27px">
+ ✦　✧　⋆
+ </div>
+ <p class="center" style="font:10px Arial;letter-spacing:2px;color:#afc9e8">
+ UMA MENSAGEM ESPECIAL PARA VOCÊ
+ </p>
+ <div class="result">
+  <h3 id="messageTitle"></h3>
+  <p id="messageText"></p>
+  <p class="quote">
+  “Sua luz tem seu próprio tempo.
+  Nunca deixe de acreditar nela.”
+  </p>
+  <div class="center" style="color:#f2d58e;font-size:20px">
+   ✦　✧　✦
+  </div>
+ </div>
+ <button class="primary" id="again">
+ ESCOLHER OUTRA ESTRELA
+ </button>
+</section>
+
+</main>
+
+<footer>
+ <div class="gold">✦ ✧ ✦</div>
+ <strong>ILUMINANDO CAMINHOS</strong><br>
+ Uma iniciativa do Interact Morumbi
+</footer>
+
+</div>
+
+<script>
+const data = [
+{
+ name:"Cansaço",symbol:"✧",desc:"Preciso respirar.",
+ details:[
+ "Tenho muitas responsabilidades",
+ "Preciso de um tempo para mim",
+ "Estou sem motivação",
+ "Queria descansar"
+ ],
+ title:"Sua luz também merece descanso",
+ message:"Você não precisa dar conta de tudo o tempo inteiro. Sua importância não está na quantidade de coisas que consegue fazer. Respeite seus limites, permita-se descansar e lembre-se de que você merece o mesmo cuidado que oferece às outras pessoas. Mesmo nos dias mais silenciosos, sua luz continua existindo."
+},
+{
+ name:"Preocupação",symbol:"✦",desc:"Minha mente está cheia.",
+ details:[
+ "Tenho medo do futuro",
+ "Penso demais nas coisas",
+ "Tenho muitas decisões pela frente",
+ "Tudo parece acontecer ao mesmo tempo"
+ ],
+ title:"Um passo de cada vez",
+ message:"Nem tudo precisa ser resolvido hoje. Você não precisa conhecer todos os caminhos para dar o próximo passo. Permita-se viver o presente, conversar com alguém de confiança e dividir aquilo que parece pesado. Pedir ajuda também é coragem."
+},
+{
+ name:"Solidão",symbol:"⋆",desc:"Quero me sentir acolhida.",
+ details:[
+ "Sinto falta de alguém",
+ "Não me sinto compreendida",
+ "Tenho dificuldade de me conectar",
+ "Queria alguém para conversar"
+ ],
+ title:"Você merece acolhimento",
+ message:"Seus sentimentos merecem espaço e atenção. Você merece relações nas quais possa ser você mesma, sem precisar esconder o que sente. Tente se aproximar de alguém em quem confia. Às vezes, uma conversa sincera pode ser o começo de uma conexão muito especial."
+},
+{
+ name:"Tristeza",symbol:"✧",desc:"Estou em uma fase difícil.",
+ details:[
+ "Estou passando por mudanças",
+ "Sinto saudade de alguém",
+ "Algo não saiu como esperava",
+ "Não sei explicar o que sinto"
+ ],
+ title:"Há espaço para novos começos",
+ message:"Você não precisa fingir que está tudo bem. Reconhecer seus sentimentos é uma forma de cuidar de si. Procure acolhimento, dê tempo a si mesma e não enfrente tudo sozinha. Uma fase difícil não representa toda a sua história."
+},
+{
+ name:"Insegurança",symbol:"✦",desc:"Tenho duvidado de mim.",
+ details:[
+ "Tenho medo de falhar",
+ "Sinto que não sou suficiente",
+ "Não reconheço minhas conquistas",
+ "Tenho medo da opinião dos outros"
+ ],
+ title:"Reconheça o seu próprio valor",
+ message:"Você não precisa ser perfeita para ter valor. Errar, aprender e mudar fazem parte de qualquer trajetória. Olhe para tudo o que já superou e permita-se reconhecer suas conquistas. Não deixe que suas dúvidas contem toda a história sobre quem você é."
+},
+{
+ name:"Desânimo",symbol:"⋆",desc:"Preciso reencontrar meu caminho.",
+ details:[
+ "Perdi a motivação",
+ "Sinto que estou estagnada",
+ "Tenho dificuldade para começar",
+ "Quero encontrar novos objetivos"
+ ],
+ title:"Pequenos passos também são caminhos",
+ message:"Você não precisa mudar tudo de uma vez. Recomeçar pode significar apenas experimentar algo diferente, recuperar um interesse ou dar um pequeno passo. Não compare seu ritmo com o de ninguém. Sua caminhada tem seu próprio tempo."
+},
+{
+ name:"Felicidade",symbol:"✧",desc:"Estou vivendo algo bom.",
+ details:[
+ "Estou orgulhosa de mim",
+ "Tenho sonhos e planos",
+ "Estou agradecida",
+ "Quero compartilhar minha alegria"
+ ],
+ title:"Continue espalhando sua luz",
+ message:"Celebre aquilo que está vivendo. Reconheça suas pequenas vitórias, valorize quem caminha ao seu lado e continue cultivando seus sonhos. Sua alegria também pode iluminar outras pessoas. Nunca subestime o poder de uma palavra gentil ou de um gesto de carinho."
+},
+{
+ name:"Confusão",symbol:"✦",desc:"Ainda estou me descobrindo.",
+ details:[
+ "Estou passando por mudanças",
+ "Tenho sentimentos misturados",
+ "Não sei o que quero para o futuro",
+ "Preciso me conhecer melhor"
+ ],
+ title:"Descobrir-se também é caminhar",
+ message:"Você não precisa ter todas as respostas sobre sua vida. Existem fases de descobertas, mudanças e novas possibilidades. Dê espaço para experimentar, aprender e conhecer diferentes versões de si mesma. Não tenha pressa: sua história ainda está sendo escrita."
+}
+];
+
+let chosen = null;
+let detail = null;
+
+const choices = document.getElementById("choices");
+
+data.forEach((item,index) => {
+ const b = document.createElement("button");
+ b.className = "choice";
+ b.innerHTML = `
+ <span class="symbol">${item.symbol}</span>
+ <strong>${item.name}</strong>
+ <small>${item.desc}</small>`;
+ b.addEventListener("click", () => select(item));
+ choices.appendChild(b);
+});
+
+function page(n) {
+ [1,2,3].forEach(i => {
+  document.getElementById("page"+i)
+   .classList.toggle("hidden",i!==n);
+  document.getElementById("p"+i)
+   .classList.toggle("active",i===n);
+ });
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function select(item) {
+ chosen = item;
+ detail = null;
+
+ document.getElementById("secondTitle").textContent =
+ "Sua estrela: "+item.name;
+
+ const box = document.getElementById("details");
+ box.innerHTML = "";
+
+ item.details.forEach(d => {
+  const b = document.createElement("button");
+  b.className = "option";
+  b.textContent = "✧  "+d;
+
+  b.addEventListener("click", () => {
+   detail = d;
+   box.querySelectorAll(".option").forEach(x =>
+    x.classList.remove("selected")
+   );
+   b.classList.add("selected");
+   document.getElementById("reveal").disabled = false;
+  });
+
+  box.appendChild(b);
+ });
+
+ document.getElementById("reveal").disabled = true;
+ page(2);
+}
+
+document.getElementById("reveal").addEventListener("click",() => {
+ document.getElementById("messageTitle").textContent = chosen.title;
+ document.getElementById("messageText").textContent = chosen.message;
+ page(3);
+});
+
+document.getElementById("back1").addEventListener("click",() => page(1));
+
+document.getElementById("again").addEventListener("click",() => {
+ chosen = null;
+ detail = null;
+ page(1);
+});
+</script>
+</body>
+</html>
